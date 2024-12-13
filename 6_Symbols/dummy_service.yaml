@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: json-datasource
-  namespace: monitoring
+  name: dummy-deployment
+  namespace: grafana-monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: json-datasource
+      app: dummy-deployment    # Changed from json-datasource
   template:
     metadata:
       labels:
-        app: json-datasource
+        app: dummy-deployment  # Changed to match selector
     spec:
       containers:
-      - name: json-datasource
+      - name: dummy-deployment # Changed for consistency
         image: python:3.9-slim
         ports:
         - containerPort: 3001
@@ -28,17 +28,17 @@ spec:
       volumes:
       - name: source-code
         configMap:
-          name: json-source-code
+          name: dummy-data     # This matches your ConfigMap name
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: json-datasource
-  namespace: monitoring
+  name: dummy-service
+  namespace: grafana-monitoring
 spec:
   selector:
-    app: json-datasource
+    app: dummy-deployment    # Changed to match deployment labels
   ports:
   - port: 80
     targetPort: 3001
