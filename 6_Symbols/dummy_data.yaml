@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: json-datasource
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: json-datasource
+  template:
+    metadata:
+      labels:
+        app: json-datasource
+    spec:
+      containers:
+      - name: json-datasource
+        image: python:3.9-slim
+        ports:
+        - containerPort: 3001
+        volumeMounts:
+        - name: source-code
+          mountPath: /app
+        workingDir: /app
+        command: ["/bin/sh", "-c"]
+        args:
+        - pip install flask && python server.py
+      volumes:
+      - name: source-code
+        configMap:
+          name: json-source-code
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: json-datasource
+  namespace: monitoring
+spec:
+  selector:
+    app: json-datasource
+  ports:
+  - port: 80
+    targetPort: 3001

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: json-source-code
+  namespace: monitoring
+data:
+  server.py: |
+    [Content of server.py from above]
+  data.json: |
+    [Content of dummy.json from above]
