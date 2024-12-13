@@ -22,7 +22,7 @@ admin:
 
 persistence:
   enabled: true
-  size: 30Mi
+  size: 10Mi
 
 service:
   type: NodePort

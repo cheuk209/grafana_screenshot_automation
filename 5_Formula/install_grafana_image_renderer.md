@@ -52,3 +52,44 @@ OPTIONS:
 I have no name!@grafana-5949bd8786-rlt89:/opt/bitnami/grafana$ 
 
 grafana-cli plugins install grafana-image-renderer
+
+
+Got it! Let's create a `values.yaml` file from scratch to install Grafana with the Image Renderer plugin enabled.
+
+Here’s a step-by-step guide:
+
+1. **Create a new `values.yaml` file** and include the necessary configurations:
+
+   ```yaml
+   plugins:
+     install:
+       - grafana-image-renderer
+
+   securityContext:
+     runAsUser: 0
+     fsGroup: 1000
+
+   extraVolumes:
+     - name: plugins
+       emptyDir: {}
+
+   extraVolumeMounts:
+     - name: plugins
+       mountPath: /opt/bitnami/grafana/data/plugins
+       subPath: plugins
+       readOnly: false
+   ```
+
+2. **Save the `values.yaml` file** to your working directory.
+
+3. **Install Grafana using the Helm chart and the `values.yaml` file**:
+
+   ```bash
+   helm install grafana bitnami/grafana --namespace grafana-monitoring -f values.yaml
+   ```
+
+This will install Grafana with the Image Renderer plugin and configure the necessary permissions for the plugin directory.
+
+Let me know if you need further assistance or run into any issues! 🚀😊📊
+
+Happy installing! 📈✨
